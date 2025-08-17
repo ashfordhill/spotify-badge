@@ -9,6 +9,11 @@ const SPOTIFY_RECENTLY_PLAYED_URL = 'https://api.spotify.com/v1/me/player/recent
 async function getAccessToken(env) {
   const { SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET, SPOTIFY_REFRESH_TOKEN } = env;
   
+  console.log('🔍 Debug - Checking environment variables:');
+  console.log('CLIENT_ID exists:', !!SPOTIFY_CLIENT_ID);
+  console.log('CLIENT_SECRET exists:', !!SPOTIFY_CLIENT_SECRET);
+  console.log('REFRESH_TOKEN exists:', !!SPOTIFY_REFRESH_TOKEN);
+  
   if (!SPOTIFY_CLIENT_ID || !SPOTIFY_CLIENT_SECRET || !SPOTIFY_REFRESH_TOKEN) {
     throw new Error('Missing required Spotify environment variables');
   }
@@ -55,7 +60,8 @@ async function getCurrentlyPlaying(accessToken) {
   }
 
   const data = await response.json();
-  return data;
+  // For currently playing, the track data is under 'item'
+  return data.item ? data.item : null;
 }
 
 /**
@@ -91,7 +97,7 @@ function formatTrackData(trackData, isCurrentlyPlaying = false) {
   if (!trackData) {
     return {
       schemaVersion: 1,
-      label: 'spotify',
+      label: '',
       message: 'Not playing',
       color: 'lightgrey',
       namedLogo: 'spotify',
@@ -99,9 +105,13 @@ function formatTrackData(trackData, isCurrentlyPlaying = false) {
     };
   }
 
+  // Handle different data structures:
+  // - Currently playing: trackData is the track object directly
+  // - Recently played: trackData.track is the track object
   const track = trackData.track || trackData;
-  const trackName = track.name || 'Unknown Track';
-  const artistName = track.artists && track.artists.length > 0 
+  
+  const trackName = track?.name || 'Unknown Track';
+  const artistName = track?.artists && track.artists.length > 0 
     ? track.artists[0].name 
     : 'Unknown Artist';
   
@@ -110,7 +120,7 @@ function formatTrackData(trackData, isCurrentlyPlaying = false) {
 
   return {
     schemaVersion: 1,
-    label: 'spotify',
+    label: '',
     message: message,
     color: color,
     namedLogo: 'spotify',
@@ -124,7 +134,7 @@ function formatTrackData(trackData, isCurrentlyPlaying = false) {
 function createErrorResponse(message = 'Service unavailable') {
   return {
     schemaVersion: 1,
-    label: 'spotify',
+    label: '',
     message: message,
     color: 'red',
     namedLogo: 'spotify',
@@ -187,21 +197,33 @@ export default {
     }
 
     try {
+      console.log('🎵 Starting Spotify badge request...');
+      
       // Get access token
       const accessToken = await getAccessToken(env);
+      console.log('✅ Access token obtained');
       
       // Try to get currently playing track
       let trackData = await getCurrentlyPlaying(accessToken);
       let isCurrentlyPlaying = true;
+      console.log('🎵 Currently playing result:', trackData ? 'Found track' : 'No current track');
       
       // If nothing is currently playing, get recently played
       if (!trackData) {
         trackData = await getRecentlyPlayed(accessToken);
         isCurrentlyPlaying = false;
+        console.log('🕐 Recently played result:', trackData ? 'Found track' : 'No recent track');
+      }
+      
+      if (trackData) {
+        const track = trackData.track || trackData;
+        console.log('🎵 Track name:', track.name);
+        console.log('🎤 Artist:', track.artists?.[0]?.name);
       }
       
       // Format response for Shields
       const badgeData = formatTrackData(trackData, isCurrentlyPlaying);
+      console.log('📊 Badge data:', badgeData.message);
       
       // Return response with caching headers
       return new Response(JSON.stringify(badgeData), {
