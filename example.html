@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Badge Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .badge-container {
+            margin: 2rem 0;
+            padding: 1rem;
+            background: #f5f5f5;
+            border-radius: 8px;
+        }
+        .badge-container h3 {
+            margin-top: 0;
+        }
+        .api-response {
+            background: #1a1a1a;
+            color: #00ff00;
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        .update-btn {
+            background: #1DB954;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .update-btn:hover {
+            background: #1ed760;
+        }
+        .status {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎵 Spotify Badge Example</h1>
+    
+    <p>This page demonstrates the Spotify now-playing badge in action. Update the API URL below to test with your deployment.</p>
+    
+    <div class="badge-container">
+        <h3>Badge Preview</h3>
+        <p>
+            <img id="badge" src="https://img.shields.io/endpoint?url=http%3A%2F%2Flocalhost%3A8787&style=flat-square&logo=spotify&labelColor=000&color=1DB954" alt="Spotify Badge">
+        </p>
+        <p>
+            <label for="api-url">API URL:</label><br>
+            <input type="text" id="api-url" value="http://localhost:8787" style="width: 100%; padding: 0.5rem; margin: 0.5rem 0;">
+        </p>
+        <button class="update-btn" onclick="updateBadge()">Update Badge</button>
+    </div>
+    
+    <div class="badge-container">
+        <h3>Different Badge Styles</h3>
+        <p><strong>Flat (default):</strong><br>
+        <img id="badge-flat" src="" alt="Flat Badge"></p>
+        
+        <p><strong>Flat Square:</strong><br>
+        <img id="badge-flat-square" src="" alt="Flat Square Badge"></p>
+        
+        <p><strong>For the Badge:</strong><br>
+        <img id="badge-for-the-badge" src="" alt="For the Badge"></p>
+        
+        <p><strong>Plastic:</strong><br>
+        <img id="badge-plastic" src="" alt="Plastic Badge"></p>
+    </div>
+    
+    <div class="badge-container">
+        <h3>Raw API Response</h3>
+        <button class="update-btn" onclick="fetchApiResponse()">Fetch API Response</button>
+        <div id="status"></div>
+        <pre id="api-response" class="api-response">Click "Fetch API Response" to see the raw JSON data...</pre>
+    </div>
+    
+    <div class="badge-container">
+        <h3>Markdown Examples</h3>
+        <p>Copy these examples for your README:</p>
+        
+        <h4>Basic Badge:</h4>
+        <pre><code>![Spotify](https://img.shields.io/endpoint?url=YOUR_API_URL&style=flat-square&logo=spotify)</code></pre>
+        
+        <h4>Styled Badge:</h4>
+        <pre><code>![Spotify](https://img.shields.io/endpoint?url=YOUR_API_URL&style=for-the-badge&logo=spotify&logoColor=white&labelColor=000000&color=1DB954)</code></pre>
+        
+        <h4>With Link:</h4>
+        <pre><code>[![Spotify](https://img.shields.io/endpoint?url=YOUR_API_URL&style=flat-square&logo=spotify)](https://open.spotify.com/user/yourusername)</code></pre>
+    </div>
+
+    <script>
+        function updateBadge() {
+            const apiUrl = document.getElementById('api-url').value;
+            const encodedUrl = encodeURIComponent(apiUrl);
+            
+            // Update main badge
+            document.getElementById('badge').src = `https://img.shields.io/endpoint?url=${encodedUrl}&style=flat-square&logo=spotify&labelColor=000&color=1DB954&t=${Date.now()}`;
+            
+            // Update style examples
+            document.getElementById('badge-flat').src = `https://img.shields.io/endpoint?url=${encodedUrl}&style=flat&logo=spotify&t=${Date.now()}`;
+            document.getElementById('badge-flat-square').src = `https://img.shields.io/endpoint?url=${encodedUrl}&style=flat-square&logo=spotify&labelColor=000&color=1DB954&t=${Date.now()}`;
+            document.getElementById('badge-for-the-badge').src = `https://img.shields.io/endpoint?url=${encodedUrl}&style=for-the-badge&logo=spotify&logoColor=white&labelColor=000000&color=1DB954&t=${Date.now()}`;
+            document.getElementById('badge-plastic').src = `https://img.shields.io/endpoint?url=${encodedUrl}&style=plastic&logo=spotify&t=${Date.now()}`;
+        }
+        
+        async function fetchApiResponse() {
+            const apiUrl = document.getElementById('api-url').value;
+            const statusDiv = document.getElementById('status');
+            const responseDiv = document.getElementById('api-response');
+            
+            statusDiv.innerHTML = '<div class="status">Fetching...</div>';
+            
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                
+                statusDiv.innerHTML = `<div class="status success">✅ Success (${response.status})</div>`;
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="status error">❌ Error: ${error.message}</div>`;
+                responseDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+        
+        // Initialize badges on page load
+        updateBadge();
+    </script>
+</body>
+</html>

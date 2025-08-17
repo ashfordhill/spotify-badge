@@ -1,0 +1,26 @@
+{
+  "name": "spotify-now-playing-api",
+  "version": "1.0.0",
+  "description": "Cloudflare Workers API for Spotify now playing badge using Shields.IO",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "setup": "node scripts/generate-refresh-token.js",
+    "test": "node scripts/test-api.js"
+  },
+  "keywords": [
+    "spotify",
+    "badge",
+    "shields",
+    "cloudflare-workers",
+    "api"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "wrangler": "^3.0.0",
+    "node-fetch": "^2.6.7"
+  }
+}
