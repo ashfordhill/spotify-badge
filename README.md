@@ -2,15 +2,10 @@
 
 Style variations from [Shields.io](https://shields.io/badges)
 
-#### Flat
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat&color=191414)
-#### Flat-Square
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat-square&color=191414)
-#### Plastic
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=plastic&color=191414)
-#### For-The-Badge
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=for-the-badge&color=191414)
-#### Social
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=social&color=191414)
 
 ## About
