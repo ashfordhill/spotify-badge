@@ -90,18 +90,29 @@ function truncateText(text, maxLength = 64) {
   return text.substring(0, maxLength - 3) + '...';
 }
 
+
+
 /**
  * Format track data for Shields badge
  */
-function formatTrackData(trackData, isCurrentlyPlaying = false) {
+function formatTrackData(trackData, isCurrentlyPlaying = false, logoColor = null) {
+  const badgeData = {
+    schemaVersion: 1,
+    label: '',
+    namedLogo: 'spotify',
+    isError: false
+  };
+
+  // Add logo color if specified (only works with namedLogo, not custom SVG)
+  if (logoColor) {
+    badgeData.logoColor = logoColor;
+  }
+
   if (!trackData) {
     return {
-      schemaVersion: 1,
-      label: '',
+      ...badgeData,
       message: 'Not playing',
-      color: 'lightgrey',
-      namedLogo: 'spotify',
-      isError: false
+      color: 'lightgrey'
     };
   }
 
@@ -119,20 +130,17 @@ function formatTrackData(trackData, isCurrentlyPlaying = false) {
   const color = isCurrentlyPlaying ? '1DB954' : '1e90ff'; // Spotify green or blue
 
   return {
-    schemaVersion: 1,
-    label: '',
+    ...badgeData,
     message: message,
-    color: color,
-    namedLogo: 'spotify',
-    isError: false
+    color: color
   };
 }
 
 /**
  * Create error response
  */
-function createErrorResponse(message = 'Service unavailable') {
-  return {
+function createErrorResponse(message = 'Service unavailable', logoColor = null) {
+  const errorData = {
     schemaVersion: 1,
     label: '',
     message: message,
@@ -140,6 +148,13 @@ function createErrorResponse(message = 'Service unavailable') {
     namedLogo: 'spotify',
     isError: true
   };
+
+  // Add logo color if specified (only works with namedLogo, not custom SVG)
+  if (logoColor) {
+    errorData.logoColor = logoColor;
+  }
+
+  return errorData;
 }
 
 /**
@@ -169,6 +184,9 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
     
+    // Parse query parameters
+    const logoColor = url.searchParams.get('logoColor');
+    
     // Handle CORS preflight
     if (request.method === 'OPTIONS') {
       return handleCORS(request);
@@ -176,7 +194,7 @@ export default {
     
     // Only handle GET requests to the root path or /api/now-playing
     if (request.method !== 'GET') {
-      return new Response(JSON.stringify(createErrorResponse('Method not allowed')), {
+      return new Response(JSON.stringify(createErrorResponse('Method not allowed', logoColor)), {
         status: 405,
         headers: {
           'Content-Type': 'application/json',
@@ -187,7 +205,7 @@ export default {
 
     // Support both root path and /api/now-playing for compatibility
     if (url.pathname !== '/' && url.pathname !== '/api/now-playing') {
-      return new Response(JSON.stringify(createErrorResponse('Not found')), {
+      return new Response(JSON.stringify(createErrorResponse('Not found', logoColor)), {
         status: 404,
         headers: {
           'Content-Type': 'application/json',
@@ -222,7 +240,7 @@ export default {
       }
       
       // Format response for Shields
-      const badgeData = formatTrackData(trackData, isCurrentlyPlaying);
+      const badgeData = formatTrackData(trackData, isCurrentlyPlaying, logoColor);
       console.log('📊 Badge data:', badgeData.message);
       
       // Return response with caching headers
@@ -239,7 +257,7 @@ export default {
       console.error('Error in worker:', error);
       
       // Always return 200 with error badge so the badge still renders
-      return new Response(JSON.stringify(createErrorResponse('Service error')), {
+      return new Response(JSON.stringify(createErrorResponse('Service error', logoColor)), {
         status: 200,
         headers: {
           'Content-Type': 'application/json',

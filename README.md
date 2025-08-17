@@ -1,17 +1,24 @@
 # Spotify Now Playing Badge API
 
-Style variations from [Shields.io](https://shields.io/badges)
+<div style="line-height: 0;">
 
-#### Flat
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat&color=191414)
-#### Flat-Square
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat-square&color=191414)
-#### Plastic
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=plastic&color=191414)
-#### For-The-Badge
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=for-the-badge&color=191414)
-#### Social
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=social&color=191414)
+
+</div>
+
+## 
+
+<div style="line-height: 2;">
+
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3D00BFFF&style=flat-square&color=191414)
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3DE6E6FA&style=plastic-square&color=4A148C)
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3D4d9462&style=flat&color=3d2914)
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3D000000&style=for-the-badge&color=000000)
+</div>
 
 ## About
 
@@ -59,6 +66,26 @@ Will show last song played or currently playing song. Currently hooked up to my 
 
 Your API will be available at `https://your-worker-name.your-subdomain.workers.dev`
 
+## Usage
+
+### Basic Usage
+```markdown
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fyour-api-endpoint.dev&style=flat)
+```
+
+### Custom Logo Color
+Add the `logoColor` parameter to customize the Spotify logo color:
+```markdown
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fyour-api-endpoint.dev%3FlogoColor%3Dff0000&style=flat)
+```
+
+The `logoColor` parameter accepts hex color codes (without the # symbol):
+- `ff0000` for red
+- `0066cc` for blue  
+- `8b5cf6` for purple
+- `ff6600` for orange
+- Any valid 6-digit hex color
+
 ## Test Your Own
 
 Once deployed, test your API endpoint:
@@ -67,7 +94,7 @@ Once deployed, test your API endpoint:
 curl https://your-worker-name.your-subdomain.workers.dev
 ```
 
-Expected response:
+Expected response (default):
 ```json
 {
   "schemaVersion": 1,
@@ -75,6 +102,19 @@ Expected response:
   "message": "Song Name — Artist Name",
   "color": "1DB954",
   "namedLogo": "spotify",
+  "isError": false
+}
+```
+
+Expected response (with custom logo color):
+```json
+{
+  "schemaVersion": 1,
+  "label": "",
+  "message": "Song Name — Artist Name", 
+  "color": "1DB954",
+  "namedLogo": "spotify",
+  "logoColor": "0066cc",
   "isError": false
 }
 ```
