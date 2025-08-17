@@ -1,4 +1,4 @@
-# Spotify Now Playing Badge API
+# Spotify Now Playing/Last Played Badge
 
 <div style="line-height: 0;">
 
