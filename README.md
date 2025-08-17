@@ -1,24 +1,25 @@
 # Spotify Now Playing/Last Played Badge
 
-<div style="line-height: 0;">
-
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat&color=191414)
-![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat-square&color=191414)
-![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=plastic&color=191414)
-![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=for-the-badge&color=191414)
-![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=social&color=191414)
 
-</div>
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=flat-square&color=191414)
+
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=plastic&color=191414)
+
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=for-the-badge&color=191414)
+
+![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev&style=social&color=191414)
 
 ## 
 
-<div style="line-height: 2;">
-
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3D00BFFF&style=flat-square&color=191414)
+
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3DE6E6FA&style=plastic-square&color=4A148C)
+
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3D4d9462&style=flat&color=3d2914)
+
 ![Spotify](https://img.shields.io/endpoint?url=https%3A%2F%2Fspotify.ashhill.dev%3FlogoColor%3D000000&style=for-the-badge&color=000000)
-</div>
+
 
 ## About
 
